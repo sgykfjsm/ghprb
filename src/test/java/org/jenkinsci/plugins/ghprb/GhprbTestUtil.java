@@ -72,14 +72,11 @@ public class GhprbTestUtil {
 
     public static JSONObject provideConfiguration() {
         JSONObject jsonObject = new JSONObject();
+        GhprbGithubCredentials credentials = new GhprbGithubCredentials("default", "https://api.github.com", "user", "1111", "accessToken", "defaultPublishedURL", false);
 
-        jsonObject.put("serverAPIUrl", "https://api.github.com");
-        jsonObject.put("username", "user");
-        jsonObject.put("password", "1111");
-        jsonObject.put("accessToken", "accessToken");
+        jsonObject.put("credential", credentials.toJSONObject());
         jsonObject.put("adminlist", "user");
         jsonObject.put("allowMembersOfWhitelistedOrgsAsAdmin", "false");
-        jsonObject.put("publishedURL", "");
         jsonObject.put("requestForTestingPhrase", "test this");
         jsonObject.put("whitelistPhrase", "");
         jsonObject.put("okToTestPhrase", "ok to test");

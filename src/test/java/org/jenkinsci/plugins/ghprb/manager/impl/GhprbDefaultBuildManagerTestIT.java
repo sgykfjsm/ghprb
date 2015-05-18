@@ -31,7 +31,7 @@ import org.mockito.runners.MockitoJUnitRunner;
  * @author mdelapenya (Manuel de la Peña)
  */
 @RunWith(MockitoJUnitRunner.class)
-public class GhprbDefaultBuildManagerTest extends GhprbITBaseTestCase {
+public class GhprbDefaultBuildManagerTestIT extends GhprbITBaseTestCase {
 
     @Rule
     public JenkinsRule jenkinsRule = new JenkinsRule();
@@ -62,15 +62,13 @@ public class GhprbDefaultBuildManagerTest extends GhprbITBaseTestCase {
     private MatrixProject givenThatGhprbHasBeenTriggeredForAMatrixProject() throws Exception {
         MatrixProject project = jenkinsRule.createMatrixProject("MTXPRJ");
 
-        GhprbTrigger trigger = GhprbTestUtil.getTrigger(null);
-
         given(commitPointer.getSha()).willReturn("sha");
 
         JSONObject jsonObject = GhprbTestUtil.provideConfiguration();
 
-        jsonObject.put("publishedURL", "defaultPublishedURL");
         GhprbTrigger.DESCRIPTOR.configure(null, jsonObject);
 
+        GhprbTrigger trigger = new GhprbTrigger("user", "user", "", "*/1 * * * *", "retest this please", false, false, false, false, false, null, null, false, null, null, null, "");
         project.addProperty(new GithubProjectProperty("https://github.com/user/dropwizard"));
 
         given(ghPullRequest.getNumber()).willReturn(1);

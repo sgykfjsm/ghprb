@@ -1,7 +1,6 @@
 package org.jenkinsci.plugins.ghprb.manager.impl.downstreambuilds;
 
 import static org.fest.assertions.Assertions.assertThat;
-
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
 
@@ -21,19 +20,17 @@ import org.jenkinsci.plugins.ghprb.GhprbTrigger;
 import org.jenkinsci.plugins.ghprb.manager.GhprbBuildManager;
 import org.jenkinsci.plugins.ghprb.manager.factory.GhprbBuildManagerFactoryUtil;
 import org.jenkinsci.plugins.ghprb.rules.JenkinsRuleWithBuildFlow;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.mockito.runners.MockitoJUnitRunner;
 
 /**
  * @author mdelapenya (Manuel de la Peña)
  */
 @RunWith(MockitoJUnitRunner.class)
-public class BuildFlowBuildManagerTest extends GhprbITBaseTestCase {
+public class BuildFlowBuildManagerTestIT extends GhprbITBaseTestCase {
 
     @Rule
     public JenkinsRuleWithBuildFlow jenkinsRule = new JenkinsRuleWithBuildFlow();
@@ -104,12 +101,12 @@ public class BuildFlowBuildManagerTest extends GhprbITBaseTestCase {
 
         buildFlowProject.setDsl(dsl.toString());
 
-        GhprbTrigger trigger = GhprbTestUtil.getTrigger(null);
-
         given(commitPointer.getSha()).willReturn("sha");
         JSONObject jsonObject = GhprbTestUtil.provideConfiguration();
 
         GhprbTrigger.DESCRIPTOR.configure(null, jsonObject);
+
+        GhprbTrigger trigger = new GhprbTrigger("user", "user", "", "*/1 * * * *", "retest this please", false, false, false, false, false, null, null, false, null, null, null, "");
 
         buildFlowProject.addProperty(new GithubProjectProperty("https://github.com/user/dropwizard"));
 
