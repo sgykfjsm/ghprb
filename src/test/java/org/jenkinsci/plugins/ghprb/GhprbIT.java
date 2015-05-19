@@ -47,9 +47,7 @@ public class GhprbIT extends GhprbITBaseTestCase {
         JSONObject jsonObject = GhprbTestUtil.provideConfiguration();
         GhprbTrigger.getDscp().configure(null, jsonObject);
 
-        GhprbTrigger trigger = new GhprbTrigger(
-            "user", "user", "", "*/1 * * * *", "retest this please", false, false, false, false, false, null, null, false, null, null, null, ""
-        );
+        GhprbTrigger trigger = GhprbTestUtil.getTrigger(null);
 
         project.addProperty(new GithubProjectProperty("https://github.com/user/dropwizard"));
         given(ghPullRequest.getNumber()).willReturn(1);
@@ -85,9 +83,7 @@ public class GhprbIT extends GhprbITBaseTestCase {
         JSONObject jsonObject = GhprbTestUtil.provideConfiguration();
         GhprbTrigger.getDscp().configure(null, jsonObject);
 
-        GhprbTrigger trigger = new GhprbTrigger(
-            "user", "user", "", "*/1 * * * *", "retest this please", false, false, false, false, false, null, null, false, null, null, null, ""
-        );
+        GhprbTrigger trigger = GhprbTestUtil.getTrigger(null);
 
         project.addProperty(new GithubProjectProperty("https://github.com/user/dropwizard"));
         given(ghPullRequest.getNumber()).willReturn(2).willReturn(2).willReturn(3).willReturn(3);
@@ -123,9 +119,7 @@ public class GhprbIT extends GhprbITBaseTestCase {
         given(ghPullRequest.getComments()).willReturn(newArrayList(comment));
         given(ghPullRequest.getNumber()).willReturn(5).willReturn(5);
 
-        GhprbTrigger trigger = new GhprbTrigger(
-            "user", "user", "", "*/1 * * * *", "retest this please", false, false, false, false, false, null, null, false, null, null, null, ""
-        );
+        GhprbTrigger trigger = GhprbTestUtil.getTrigger(null);
 
         project.addProperty(new GithubProjectProperty("https://github.com/user/dropwizard"));
 

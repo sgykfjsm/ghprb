@@ -133,7 +133,7 @@ public class GhprbBuilds {
         repo.createCommitStatus(build, state, "Build finished.", c.getPullID(), trigger.getCommitStatusContext(), listener.getLogger());
 
 
-        String publishedURL = GhprbTrigger.getDscp().getPublishedURL();
+        String publishedURL = trigger.getCredentials().getPublishedUrl();
         if (publishedURL != null && !publishedURL.isEmpty()) {
             buildResultMessage(build, listener, state, c);
         }

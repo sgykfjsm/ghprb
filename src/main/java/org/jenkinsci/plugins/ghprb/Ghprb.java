@@ -97,7 +97,7 @@ public class Ghprb {
     }
 
     public GhprbGitHub getGitHub() {
-        return trigger.getDescriptor().getGitHub();
+        return trigger.getCredentials().getGitHub();
     }
 
     void run() {

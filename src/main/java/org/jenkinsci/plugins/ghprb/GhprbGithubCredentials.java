@@ -2,7 +2,10 @@ package org.jenkinsci.plugins.ghprb;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Logger;
 
+import com.google.common.annotations.VisibleForTesting;
+import hudson.Extension;
 import hudson.model.ModelObject;
 import net.sf.json.JSONObject;
 
@@ -106,11 +109,13 @@ public class GhprbGithubCredentials implements ModelObject{
 
 	public JSONObject toJSONObject() {
 		JSONObject creds = new JSONObject();
+		creds.put("name", name);
 		creds.put("serverApiUrl", serverApiUrlString);
 		creds.put("username", username);
 		creds.put("password", password);
 		creds.put("accessToken", accessToken);
 		creds.put("publishedUrl", publishedUrl);
+		creds.put("ignoreBotUser", ignoreBotUser);
 		return creds;
 	}
 
@@ -146,5 +151,11 @@ public class GhprbGithubCredentials implements ModelObject{
 		}
 		return gh;
 	}
+
+	@VisibleForTesting
+	void setGitHub(GhprbGitHub gh) {
+		this.gh = gh;
+	}
+
 
 }

@@ -134,6 +134,7 @@ public class GhprbTestUtil {
             put("msgSuccess", null);
             put("msgFailure", null);
             put("commitStatusContext", null);
+            put("credential", "");
         }};
         
         defaultValues.putAll(values);
@@ -153,7 +154,8 @@ public class GhprbTestUtil {
                 (Boolean)defaultValues.get("allowMembersOfWhitelistedOrgsAsAdmin"),
                 (String)defaultValues.get("msgSuccess"),
                 (String)defaultValues.get("msgFailure"),
-                (String)defaultValues.get("commitStatusContext"));
+                (String)defaultValues.get("commitStatusContext"),
+                (String)defaultValues.get("credentials"));
         return trigger;
     }
     

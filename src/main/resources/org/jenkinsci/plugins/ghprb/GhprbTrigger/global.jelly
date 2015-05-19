@@ -99,6 +99,7 @@
       <f:entry title="${%Default failure message}" field="msgFailure">
         <f:textarea default="Test FAILed."/>
       </f:entry>
+    </f:advanced>
 
   </f:section>
 </j:jelly>
