@@ -2,10 +2,8 @@ package org.jenkinsci.plugins.ghprb;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.logging.Logger;
 
 import com.google.common.annotations.VisibleForTesting;
-import hudson.Extension;
 import hudson.model.ModelObject;
 import net.sf.json.JSONObject;
 
@@ -156,6 +154,5 @@ public class GhprbGithubCredentials implements ModelObject{
 	void setGitHub(GhprbGitHub gh) {
 		this.gh = gh;
 	}
-
 
 }

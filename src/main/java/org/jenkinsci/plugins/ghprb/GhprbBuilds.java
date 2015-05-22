@@ -90,7 +90,7 @@ public class GhprbBuilds {
             return;
         }
 
-        repo.createCommitStatus(build, GHCommitState.PENDING, 
+        repo.createCommitStatus(build, GHCommitState.PENDING,
                 (c.isMerged() ? "Build started, sha1 is merged" : "Build started, sha1 is original commit."), c.getPullID(),
                 trigger.getCommitStatusContext(), logger);
         try {
@@ -131,7 +131,6 @@ public class GhprbBuilds {
             state = GHCommitState.FAILURE;
         }
         repo.createCommitStatus(build, state, "Build finished.", c.getPullID(), trigger.getCommitStatusContext(), listener.getLogger());
-
 
         String publishedURL = trigger.getCredentials().getPublishedUrl();
         if (publishedURL != null && !publishedURL.isEmpty()) {

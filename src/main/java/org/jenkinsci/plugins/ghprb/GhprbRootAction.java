@@ -98,7 +98,6 @@ public class GhprbRootAction implements UnprotectedRootAction {
         logger.log(Level.INFO, "Got payload event: {0}", event);
         try {
             GitHub gh = GitHub.connectAnonymously();
-
             if ("issue_comment".equals(event)) {
                 GHEventPayload.IssueComment issueComment = gh.parseEventPayload(new StringReader(payload), GHEventPayload.IssueComment.class);
                 GHIssueState state = issueComment.getIssue().getState();

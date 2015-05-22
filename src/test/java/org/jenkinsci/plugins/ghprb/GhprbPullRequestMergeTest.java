@@ -90,7 +90,7 @@ public class GhprbPullRequestMergeTest {
     private final String mergeComment = "merge";
 
     private final Integer pullId = 1;
-    
+
     @Before
     public void beforeTest() throws Exception {
         GhprbTrigger trigger = spy(new GhprbTrigger(adminList, "user", "", "*/1 * * * *", triggerPhrase, false, false, false, false, false, null, null, false, null, null, null, ""));

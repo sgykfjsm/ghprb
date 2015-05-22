@@ -9,7 +9,6 @@
           <f:entry title="${%GitHub server api URL}">
             <f:textbox name="credential.serverApiUrl" value="${credential.serverApiUrl}" default="https://api.github.com"/>
           </f:entry>
-
           <f:entry title="${%Ignore Bot User}">
             <f:checkbox name="credential.ignoreBotUser" value="${credential.ignoreBotUser}"/>
           </f:entry>
@@ -45,7 +44,6 @@
         </table>
       </f:repeatable>
     </f:entry>
-
     <f:entry title="${%Use comments to report results when updating commit status fails}" field="useComments">
       <f:checkbox />
     </f:entry>

@@ -222,7 +222,7 @@ public class GhprbTrigger extends Trigger<AbstractProject<?, ?>> {
             return;
         }
 
-        logger.log(Level.INFO, "Starting the ghprb trigger for the {0} job; newInstance is {1}", 
+        logger.log(Level.INFO, "Starting the ghprb trigger for the {0} job; newInstance is {1}",
                 new String[] { this.project, String.valueOf(newInstance) });
         super.start(project, newInstance);
         helper.init();
@@ -485,7 +485,7 @@ public class GhprbTrigger extends Trigger<AbstractProject<?, ?>> {
         private static final Pattern adminlistPattern = Pattern.compile("((\\p{Alnum}[\\p{Alnum}-]*)|\\s)*");
 
         /**
-         * These settings only really affect testing. When Jenkins calls configure() then the formdata will 
+         * These settings only really affect testing. When Jenkins calls configure() then the formdata will
          * be used to replace all of these fields. Leaving them here is useful for
          * testing, but must not be confused with a default. They also should not be used as the default 
          * value in the global.jelly file as this value is dynamic and will not be
@@ -528,7 +528,6 @@ public class GhprbTrigger extends Trigger<AbstractProject<?, ?>> {
             if (jobs == null) {
                 jobs = new HashMap<String, ConcurrentMap<Integer, GhprbPullRequest>>();
             }
-
             if (credentials == null) {
                 credentials = new HashSet<GhprbGithubCredentials>(1);
             }

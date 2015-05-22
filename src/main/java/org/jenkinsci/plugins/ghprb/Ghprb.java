@@ -179,4 +179,8 @@ public class Ghprb {
 
     }
 
+    public boolean isIgnoreBotUser() {
+        return trigger.getCredentials().isIgnoreBotUser();
+    }
+
 }

@@ -32,110 +32,118 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class BuildFlowBuildManagerTestIT extends GhprbITBaseTestCase {
 
-    @Rule
-    public JenkinsRuleWithBuildFlow jenkinsRule = new JenkinsRuleWithBuildFlow();
+	@Rule
+	public JenkinsRuleWithBuildFlow jenkinsRule = new JenkinsRuleWithBuildFlow();
 
-    @Before
-    public void setUp() throws Exception {
-        super.beforeTest();
-    }
+	@Before
+	public void setUp() throws Exception {
+		super.beforeTest();
+	}
 
-    @Test
-    public void shouldCalculateUrlWithDownstreamBuilds() throws Exception {
-        // GIVEN
-        BuildFlow buildFlowProject = givenThatGhprbHasBeenTriggeredForABuildFlowProject();
+	@Test
+	public void shouldCalculateUrlWithDownstreamBuilds() throws Exception {
+		// GIVEN
+		BuildFlow buildFlowProject =
+			givenThatGhprbHasBeenTriggeredForABuildFlowProject();
 
-        // THEN
-        assertThat(buildFlowProject.getBuilds().toArray().length).isEqualTo(1);
+		// THEN
+		assertThat(buildFlowProject.getBuilds().toArray().length).isEqualTo(1);
 
-        FlowRun flowRun = buildFlowProject.getBuilds().getFirstBuild();
+		FlowRun flowRun = buildFlowProject.getBuilds().getFirstBuild();
 
-        GhprbBuildManager buildManager = GhprbBuildManagerFactoryUtil.getBuildManager(flowRun);
+		GhprbBuildManager buildManager =
+			GhprbBuildManagerFactoryUtil.getBuildManager(flowRun);
 
-        assertThat(buildManager).isInstanceOf(BuildFlowBuildManager.class);
+		assertThat(buildManager).isInstanceOf(BuildFlowBuildManager.class);
 
-        Iterator iterator = buildManager.downstreamProjects();
+		Iterator iterator = buildManager.downstreamProjects();
 
-        StringBuilder expectedUrl = new StringBuilder();
+		StringBuilder expectedUrl = new StringBuilder();
 
-        int count = 0;
+		int count = 0;
 
-        while (iterator.hasNext()) {
-            Object downstreamBuild = iterator.next();
+		while (iterator.hasNext()) {
+			Object downstreamBuild = iterator.next();
 
-            assertThat(downstreamBuild).isInstanceOf(JobInvocation.class);
+			assertThat(downstreamBuild).isInstanceOf(JobInvocation.class);
 
-            JobInvocation jobInvocation = (JobInvocation) downstreamBuild;
+			JobInvocation jobInvocation = (JobInvocation)downstreamBuild;
 
-            String jobInvocationBuildUrl = jobInvocation.getBuildUrl();
+			String jobInvocationBuildUrl = jobInvocation.getBuildUrl();
 
-            expectedUrl.append("\n<a href='");
-            expectedUrl.append(jobInvocationBuildUrl);
-            expectedUrl.append("'>");
-            expectedUrl.append(jobInvocationBuildUrl);
-            expectedUrl.append("</a>");
+			expectedUrl.append("\n<a href='");
+			expectedUrl.append(jobInvocationBuildUrl);
+			expectedUrl.append("'>");
+			expectedUrl.append(jobInvocationBuildUrl);
+			expectedUrl.append("</a>");
 
-            count++;
-        }
+			count++;
+		}
 
-        assertThat(count).isEqualTo(4);
+		assertThat(count).isEqualTo(4);
 
-        assertThat(buildManager.calculateBuildUrl()).isEqualTo(expectedUrl.toString());
-    }
+		assertThat(buildManager.calculateBuildUrl()).isEqualTo(expectedUrl.toString());
+	}
 
-    private BuildFlow givenThatGhprbHasBeenTriggeredForABuildFlowProject() throws Exception {
+	private BuildFlow givenThatGhprbHasBeenTriggeredForABuildFlowProject()
+		throws Exception {
 
-        BuildFlow buildFlowProject = jenkinsRule.createBuildFlowProject();
+		BuildFlow buildFlowProject = jenkinsRule.createBuildFlowProject();
 
-        jenkinsRule.createFreeStyleProject("downstreamProject1");
-        jenkinsRule.createFreeStyleProject("downstreamProject2");
-        jenkinsRule.createFreeStyleProject("downstreamProject3");
+		jenkinsRule.createFreeStyleProject("downstreamProject1");
+		jenkinsRule.createFreeStyleProject("downstreamProject2");
+		jenkinsRule.createFreeStyleProject("downstreamProject3");
 
-        StringBuilder dsl = new StringBuilder();
+		StringBuilder dsl = new StringBuilder();
 
-        dsl.append("parallel (");
-        dsl.append("    { build(\"downstreamProject1\") },");
-        dsl.append("    { build(\"downstreamProject2\") }");
-        dsl.append(")");
-        dsl.append("{ build(\"downstreamProject3\") }");
+		dsl.append("parallel (");
+		dsl.append("    { build(\"downstreamProject1\") },");
+		dsl.append("    { build(\"downstreamProject2\") }");
+		dsl.append(")");
+		dsl.append("{ build(\"downstreamProject3\") }");
 
-        buildFlowProject.setDsl(dsl.toString());
+		buildFlowProject.setDsl(dsl.toString());
 
-        given(commitPointer.getSha()).willReturn("sha");
-        JSONObject jsonObject = GhprbTestUtil.provideConfiguration();
 
-        GhprbTrigger.DESCRIPTOR.configure(null, jsonObject);
+		given(commitPointer.getSha()).willReturn("sha");
+		JSONObject jsonObject = GhprbTestUtil.provideConfiguration();
 
-        GhprbTrigger trigger = new GhprbTrigger("user", "user", "", "*/1 * * * *", "retest this please", false, false, false, false, false, null, null, false, null, null, null, "");
+		GhprbTrigger.DESCRIPTOR.configure(null, jsonObject);
 
-        buildFlowProject.addProperty(new GithubProjectProperty("https://github.com/user/dropwizard"));
+        GhprbTrigger trigger = new GhprbTrigger("user", "user", "",
+            "*/1 * * * *", "retest this please", false, false, false, false,
+            false, null, null, false, null, null, null, "");
 
-        given(ghPullRequest.getNumber()).willReturn(1);
+		buildFlowProject.addProperty(new GithubProjectProperty(
+			"https://github.com/user/dropwizard"));
 
-        // Creating spy on ghprb, configuring repo
-        Ghprb ghprb = spyCreatingGhprb(trigger, buildFlowProject);
+		given(ghPullRequest.getNumber()).willReturn(1);
 
-        doReturn(ghprbGitHub).when(ghprb).getGitHub();
+		// Creating spy on ghprb, configuring repo
+		Ghprb ghprb = spyCreatingGhprb(trigger, buildFlowProject);
 
-        setRepositoryHelper(ghprb);
+		doReturn(ghprbGitHub).when(ghprb).getGitHub();
 
-        given(ghRepository.getPullRequest(1)).willReturn(ghPullRequest);
+		setRepositoryHelper(ghprb);
 
-        // Configuring and adding Ghprb trigger
-        buildFlowProject.addTrigger(trigger);
+		given(ghRepository.getPullRequest(1)).willReturn(ghPullRequest);
 
-        buildFlowProject.getTriggers().keySet().iterator().next().configure(null, jsonObject);
+		// Configuring and adding Ghprb trigger
+		buildFlowProject.addTrigger(trigger);
 
-        // Configuring Git SCM
-        buildFlowProject.setScm(GhprbTestUtil.provideGitSCM());
+		buildFlowProject.getTriggers().keySet().iterator().next()
+			.configure(null, jsonObject);
 
-        trigger.start(buildFlowProject, true);
+		// Configuring Git SCM
+		buildFlowProject.setScm(GhprbTestUtil.provideGitSCM());
 
-        setTriggerHelper(trigger, ghprb);
+		trigger.start(buildFlowProject, true);
 
-        GhprbTestUtil.triggerRunAndWait(10, trigger, buildFlowProject);
+		setTriggerHelper(trigger, ghprb);
 
-        return buildFlowProject;
-    }
+		Thread.sleep(130000);
+
+		return buildFlowProject;
+	}
 
 }

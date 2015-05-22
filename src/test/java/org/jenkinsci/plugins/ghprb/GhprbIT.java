@@ -108,7 +108,7 @@ public class GhprbIT extends GhprbITBaseTestCase {
         FreeStyleProject project = jenkinsRule.createFreeStyleProject("PRJ");
 
         given(commitPointer.getSha()).willReturn("sha");
-
+        
         JSONObject jsonObject = GhprbTestUtil.provideConfiguration();
         GhprbTrigger.getDscp().configure(null, jsonObject);
 
@@ -122,6 +122,7 @@ public class GhprbIT extends GhprbITBaseTestCase {
         GhprbTrigger trigger = GhprbTestUtil.getTrigger(null);
 
         project.addProperty(new GithubProjectProperty("https://github.com/user/dropwizard"));
+        
 
         Ghprb ghprb = spy(trigger.createGhprb(project));
         doReturn(ghprbGitHub).when(ghprb).getGitHub();
